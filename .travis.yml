@@ -1,0 +1,38 @@
+sudo: required
+services:
+  - docker
+before_install:
+  - docker build -t shandak/react-test -f ./client/Dockerfile.dev ./client
+env:
+  - CI="true"
+language: node_js
+node_js:
+  - 8
+cache:
+  directories:
+    - node_modules
+script:
+  - docker run shandak/react-test npm run build
+  - npm test
+after_success:
+  - docker build -t shandak/multi-client ./client
+  - docker build -t shandak/multi-nginx ./nginx
+  - docker build -t shandak/multi-server ./server
+  - docker build -t shandak/multi-worker ./worker
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  - docker push shandak/multi-client
+  - docker push shandak/multi-nginx
+  - docker push shandak/multi-server
+  - docker push shandak/multi-worker
+#deploy:
+#  provider: elasticbeanstalk
+#  region: "us-east-2"
+#  app: "docker-react"
+#  env: "DockerReact-env"
+#  bucket_name: "elasticbeanstalk-us-east-2-351523127941"
+#  bucket_path: "docker-react"
+#  on:
+#    branch: master
+#  access_key_id: $AWS_ACCESS_KEY
+#  secret_access_key:
+#    secure: "$AWS_SECRET_KEY"
