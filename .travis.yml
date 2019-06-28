@@ -12,8 +12,8 @@ cache:
   directories:
     - node_modules
 script:
-  - docker run shandak/react-test npm test
-#  - npm test
+  - docker run shandak/react-test npm run build
+  - npm test
 after_success:
   - docker build -t shandak/multi-client ./client
   - docker build -t shandak/multi-nginx ./nginx
