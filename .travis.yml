@@ -23,15 +23,15 @@ after_success:
   - docker push shandak/multi-nginx
   - docker push shandak/multi-server
   - docker push shandak/multi-worker
-#deploy:
-#  provider: elasticbeanstalk
-#  region: "us-east-2"
-#  app: "docker-react"
-#  env: "DockerReact-env"
-#  bucket_name: "elasticbeanstalk-us-east-2-351523127941"
-#  bucket_path: "docker-react"
-#  on:
-#    branch: master
-#  access_key_id: $AWS_ACCESS_KEY
-#  secret_access_key:
-#    secure: "$AWS_SECRET_KEY"
+deploy:
+  provider: elasticbeanstalk
+  region: "us-east-2"
+  app: "multi-docker"
+  env: "MultiDocker-env"
+  bucket_name: "elasticbeanstalk-us-east-2-351523127941"
+  bucket_path: "docker-multi"
+  on:
+    branch: master
+  access_key_id: $AWS_ACCESS_KEY
+  secret_access_key:
+    secure: "$AWS_SECRET_KEY"
